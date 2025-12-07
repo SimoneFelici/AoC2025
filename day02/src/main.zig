@@ -1,21 +1,37 @@
 const std = @import("std");
 
+fn count_digits(n: u64) u32 {
+    if (n == 0) return 1;
+    var num = n;
+    var count: u32 = 0;
+    while (num > 0) : (count += 1) {
+        num /= 10;
+    }
+    return count;
+}
+
 fn ret_invalid(nums: [2]u64) u64 {
     var sum: u64 = 0;
     var current = nums[0];
-    var buf: [10]u8 = undefined;
 
     while (current <= nums[1]) : (current += 1) {
-        const str = std.fmt.bufPrint(&buf, "{d}", .{current}) catch unreachable;
-        const half = str.len / 2;
-        const left = str[0..half];
-        const right = str[half..];
+        const digits = count_digits(current);
 
-        if (std.mem.eql(u8, left, right)) {
+        if (digits % 2 != 0) continue;
+
+        var divisor: u64 = 1;
+        var i: u32 = 0;
+        while (i < digits / 2) : (i += 1) {
+            divisor *= 10;
+        }
+
+        const left = current / divisor;
+        const right = current % divisor;
+
+        if (left == right) {
             sum += current;
         }
     }
-
     return sum;
 }
 
