@@ -52,13 +52,15 @@ pub fn main() !void {
     for (0..GRID_SIZE) |row| {
         for (0..GRID_SIZE) |col| {
             const char = getChar(raw_content, row, col);
+            if (char == '.') continue;
             if (char == '@' and check_neighbor(raw_content, row, col)) {
-                std.debug.print("X", .{});
+                // std.debug.print("X", .{});
                 total += 1;
-            } else {
-                std.debug.print("{c}", .{char});
             }
+            // else {
+            //     std.debug.print("{c}", .{char});
+            // }
         }
     }
-    std.debug.print("\n{d}\n", .{total});
+    std.debug.print("{d}\n", .{total});
 }
